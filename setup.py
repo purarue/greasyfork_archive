@@ -11,9 +11,8 @@ with io.open("README.md", encoding="utf-8") as fo:
 setup(
     name="greasyfork_archive",
     version="0.1.4",
-    url="https://github.com/seanbreckenridge/greasyfork_archive",
-    author="Sean Breckenridge",
-    author_email="seanbrecke@gmail.com",
+    url="https://github.com/purarue/greasyfork_archive",
+    author="purarue",
     description=("""Scrape data from a users Greasyfork account"""),
     long_description=long_description,
     long_description_content_type="text/markdown",

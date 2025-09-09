@@ -1,7 +1,7 @@
 # Greasyfork User Archive
 
 [![PyPi version](https://img.shields.io/pypi/v/greasyfork_archive.svg)](https://pypi.org/project/greasyfork-archive) 
-[![Python 3.6|3.7|3.8|3.9](https://img.shields.io/pypi/pyversions/greasyfork_archive.svg)](https://pypi.org/project/greasyfork-archive)
+[![Python 3.9|3.10|3.11|3.12|3.13](https://img.shields.io/pypi/pyversions/greasyfork_archive.svg)](https://pypi.org/project/greasyfork-archive)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 

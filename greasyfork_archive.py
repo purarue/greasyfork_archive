@@ -1,7 +1,8 @@
 import sys
 import json
 import time
-from typing import List, Callable, Mapping, Optional, Dict, Any
+from typing import Any
+from collections.abc import Callable, Mapping
 
 import click
 import requests
@@ -23,7 +24,7 @@ def prepend_greasyfork_base(url: str) -> str:
     return url
 
 
-def backoff_hdlr(details: Dict[str, Any]) -> None:
+def backoff_hdlr(details: dict[str, Any]) -> None:
     click.echo(
         "Backing off {wait:0.1f} seconds afters {tries} tries "
         "calling function {target} with args {args} and kwargs "
@@ -102,7 +103,7 @@ class UserScript:
             )
         except KeyError as k:
             click.echo(
-                "Could not find data-attribute '{}' in list element".format(str(k)),
+                f"Could not find data-attribute '{str(k)}' in list element",
                 err=True,
             )
             sys.exit(1)
@@ -118,7 +119,7 @@ class UserScript:
             self.__class__.__name__,
             ", ".join(
                 [
-                    "{}={}".format(a, repr(getattr(self, a, None)))
+                    f"{a}={repr(getattr(self, a, None))}"
                     for a in self.__class__.attrs  # type: ignore
                 ]
             ),
@@ -127,17 +128,17 @@ class UserScript:
     def __str__(self) -> str:
         return self.__repr__()
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {k: getattr(self, k) for k in self.__class__.attrs}
 
     @property
     def code_url(self) -> str:
         return f"{self.url}/code"
 
-    def get_raw_script_code_link(self) -> Optional[str]:
+    def get_raw_script_code_link(self) -> str | None:
         resp: requests.Response = request_url(self.code_url)
         code_soup = bs4.BeautifulSoup(resp.text, "html.parser")
-        install_links: List[bs4.element.PageElement] = code_soup.find_all(
+        install_links: list[bs4.element.PageElement] = code_soup.find_all(
             "a", attrs={"class": "install-link"}, href=True
         )
         if len(install_links) == 0:
@@ -146,24 +147,24 @@ class UserScript:
             return prepend_greasyfork_base(install_links[0]["href"])
 
 
-def get_user_scripts(user_url: str) -> List[bs4.element.PageElement]:
+def get_user_scripts(user_url: str) -> list[bs4.element.PageElement]:
     """Request and select the li items representing each script"""
     user_page: requests.Response = request_url(user_url)
     user_soup: bs4.BeautifulSoup = bs4.BeautifulSoup(user_page.text, "html.parser")
-    script_items: List[bs4.element.PageElement] = user_soup.select(
+    script_items: list[bs4.element.PageElement] = user_soup.select(
         "ol#user-script-list > li"
     )
     return script_items
 
 
 def main_wrapper(greasyfork_user_id: int, output_file: str) -> int:
-    script_html_elements: List[bs4.element.PageElement] = get_user_scripts(
+    script_html_elements: list[bs4.element.PageElement] = get_user_scripts(
         get_user_url(greasyfork_user_id)
     )
-    script_items: List[UserScript] = list(
+    script_items: list[UserScript] = list(
         map(lambda el: UserScript(el), script_html_elements)
     )
-    json_dict: Dict[str, List[Dict[str, Any]]] = {
+    json_dict: dict[str, list[dict[str, Any]]] = {
         "greasyfork_scripts": list(map(lambda s: s.to_dict(), script_items))
     }
     if output_file:

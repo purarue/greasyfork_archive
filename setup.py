@@ -1,12 +1,11 @@
-import io
 from setuptools import setup
 
-with io.open("requirements.txt", "r", encoding="utf-8") as req_file:
+with open("requirements.txt", encoding="utf-8") as req_file:
     requirements = req_file.read().splitlines()
 
 # Use the README.md content for the long description:
-with io.open("README.md", encoding="utf-8") as fo:
-    long_description = fo.read()
+with open("README.md", encoding="utf-8") as fileobj:
+    long_description = fileobj.read()
 
 setup(
     name="greasyfork_archive",
@@ -19,7 +18,7 @@ setup(
     license="MIT",
     py_modules=["greasyfork_archive"],
     test_suite="tests",
-    requires_python=">=3.9",
+    requires_python=">=3.10",
     install_requires=requirements,
     entry_points={"console_scripts": ["greasyfork_archive = greasyfork_archive:main"]},
     keywords="",
@@ -32,5 +31,6 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
     ],
 )
